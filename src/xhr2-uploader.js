@@ -10,193 +10,160 @@ String.prototype.hashCode = function () {
 
 (function ($) {
 
-	$.fn.uploader = function (conf)
-	{
-		var conf = $.extend({
-			fileDataValidator: function (name, size, type) {},
-			url: 'upload.php'
-		}, conf),
+	$.fn.uploader = function (conf) {
+		var
+			conf = $.extend({
+				fileDataValidator: function (name, size, type) {
+				},
+				url: 'upload.php'
+			}, conf),
 
-		attachFiles = function (files)
-		{
-			$.each(files, function (index, file)
-			{
-				var
-					name = file.name, size = file.size, type = file.type, hash = name.hashCode() + Math.random(),
-
-					xhrUploadEvents = {
-
-						loadstart: function (e)
-						{
-							conf.xhrUploadEvents.loadstart(e, hash);
-						},
-						progress: function (e)
-						{
-							conf.xhrUploadEvents.progress(e, hash);
-						}
-					},
-
-					ajaxEvents = {
-
-						success: function (data)
-						{
-							conf.ajaxEvents.success(data, hash);
-						},
-						error: function (jqXHR, textStatus, errorThrown)
-						{
-							conf.ajaxEvents.error(jqXHR, textStatus, errorThrown, hash);
-						}
-					};
-
-				if (conf.fileDataValidator(name, size, type) === true)
-				{
-					if (conf.reader)
-					{
-						var reader = new FileReader();
-						reader.onload = function ()
-						{
-							$('textarea#' + $element.attr('id')).val(this.result);
-						}
-						reader.readAsText(file);
-
-						return;
-					}
-					var formData = new FormData();
-					formData.append('filename', file);
-
-					$.ajax
-					({
-						url: conf.url + ';filename=' + encodeURIComponent(name),
-						type: 'POST',
-						xhr: function() {  // custom xhr
-							myXhr = $.ajaxSettings.xhr();;
-							if (myXhr.upload){ // check if upload property exists
-								myXhr.upload.addEventListener("loadstart", xhrUploadEvents.loadstart, false);
-								myXhr.upload.addEventListener('progress', xhrUploadEvents.progress, false); // for handling the progress of the upload
+			attachFiles = function (files) {
+				$.each(files, function (index, file) {
+					var
+						name = file.name, size = file.size, type = file.type, hash = name.hashCode() + Math.random(),
+						xhrUploadEvents = {
+							loadstart: function (e) {
+								conf.xhrUploadEvents.loadstart(e, hash);
+							},
+							progress: function (e) {
+								conf.xhrUploadEvents.progress(e, hash);
 							}
-							return myXhr;
 						},
-						//Ajax events
-						success: ajaxEvents.success,
-						error: ajaxEvents.error,
-						// Form data
-						data: formData,
-						//Options to tell JQuery not to process data or worry about content-type
-						cache: false,
-						contentType: false,
-						processData: false
-					});
-				}
-			});
-		};
+						ajaxEvents = {
+							success: function (data) {
+								conf.ajaxEvents.success(data, hash);
+							},
+							error: function (jqXHR, textStatus, errorThrown) {
+								conf.ajaxEvents.error(jqXHR, textStatus, errorThrown, hash);
+							}
+						};
+
+					if (conf.fileDataValidator(name, size, type) === true) {
+						if (conf.reader) {
+							var reader = new FileReader();
+							reader.onload = function () {
+								$('textarea#' + $element.attr('id')).val(this.result);
+							}
+							reader.readAsText(file);
+
+							return;
+						}
+						var formData = new FormData();
+						formData.append('filename', file);
+
+						$.ajax({
+							url: conf.url + ';filename=' + encodeURIComponent(name),
+							type: 'POST',
+							xhr: function () {  // custom xhr
+								myXhr = $.ajaxSettings.xhr();
+
+								if (myXhr.upload) { // check if upload property exists
+									myXhr.upload.addEventListener("loadstart", xhrUploadEvents.loadstart, false);
+									myXhr.upload.addEventListener('progress', xhrUploadEvents.progress, false); // for handling the progress of the upload
+								}
+								return myXhr;
+							},
+							// Ajax events
+							success: ajaxEvents.success,
+							error: ajaxEvents.error,
+							// Form data
+							data: formData,
+							// Options to tell JQuery not to process data or worry about content-type
+							cache: false,
+							contentType: false,
+							processData: false
+						});
+					}
+				});
+			};
 
 		// Chain methods!
-		return this.each(function ()
-		{
+		return this.each(function () {
 			var element = this, $element = $(element);
 
-			var $dropZone = $('<div id="dropzone' + $element.attr('id') + '" style="text-align: center; border: 1px solid black; padding: 20px;" class="windowbg2"><div class="largetext">' + txt_drag_help + '</div><div class="mediumtext">' + txt_drag_help_subtext  + '</div></div>').hide().prependTo($element.parent());
+			var $dropZone = $('<div id="dropzone' + $element.attr('id') + '" style="text-align: center; border: 1px solid black; padding: 20px;" class="windowbg2"><div class="largetext">' + txt_drag_help + '</div><div class="mediumtext">' + txt_drag_help_subtext + '</div></div>').hide().prependTo($element.parent());
 
 			var dragUIOpened = false;
 			var dragTimer = new Date().getTime(),
 
-			documentEvents =
-			{
-				dragover: function (e)
-				{
-					if ($element.parent().parent().parent().is(':visible'))
-					{
-						e.dataTransfer.dropEffect = 'none';
+				documentEvents = {
+					dragover: function (e) {
+						if ($element.parent().parent().parent().is(':visible')) {
+							e.dataTransfer.dropEffect = 'none';
 
+							e.stopPropagation();
+							e.preventDefault();
+
+							// Expand the additional option if it's collapsed
+							if (!dragUIOpened) {
+								// Show a neat "Drop the file here" notice
+								$element.fadeOut('fast', function () {
+									$dropZone.fadeIn();
+								});
+								dragUIOpened = true;
+							}
+							dragTimer = new Date().getTime();
+						}
+					},
+
+					dragleave: function (e) {
+						if ($element.parent().parent().parent().is(':visible')) {
+							setTimeout(function () {
+								if (new Date().getTime() - dragTimer > 200) {
+									$dropZone.fadeOut('fast', function () {
+										$element.fadeIn();
+									});
+									dragUIOpened = false;
+								}
+							}, 200);
+						}
+					}
+				},
+
+				dropZoneEvents = {
+					dragover: function (e) {
+						e.dataTransfer.dropEffect = 'copy';
+						dragTimer = new Date().getTime();
+						$dropZone.toggleClass('highlight', true);
+						e.stopPropagation();
+						e.preventDefault();
+					},
+					dragleave: function (e) {
+						$dropZone.toggleClass('highlight', false);
+					},
+
+					drop: function (e) {
+						var dt = e.dataTransfer;
 						e.stopPropagation();
 						e.preventDefault();
 
-						// Expand the additional option if it's collapsed
-						if (!dragUIOpened)
-						{
-							// Show a neat "Drop the file here" notice
-							$element.fadeOut('fast', function()
-							{
-								$dropZone.fadeIn();
+						// Make sure we are dragging a file over
+						if (!dt && !(dt.files || (!$.browser.webkit && dt.types.contains && dt.types.contains('Files'))))
+							return false;
+
+						dragUIOpened = false;
+
+						var files = dt.files;
+						$dropZone.fadeOut('fast', function () {
+							$element.fadeIn(function () {
+								attachFiles(files);
 							});
-							dragUIOpened = true;
-						}
-						dragTimer = new Date().getTime();
-					}
-				},
-
-				dragleave: function (e)
-				{
-					if ($element.parent().parent().parent().is(':visible'))
-					{
-						setTimeout(function ()
-						{
-							if (new Date().getTime() - dragTimer > 200)
-							{
-								$dropZone.fadeOut('fast', function()
-								{
-									$element.fadeIn();
-								});
-								dragUIOpened = false;
-							}
-						}, 200);
-					}
-				}
-			},
-
-			dropZoneEvents =
-			{
-
-				dragover: function (e)
-				{
-					e.dataTransfer.dropEffect = 'copy';
-					dragTimer = new Date().getTime();
-					$dropZone.toggleClass('highlight', true);
-					e.stopPropagation();
-					e.preventDefault();
-				},
-				dragleave: function (e)
-				{
-					$dropZone.toggleClass('highlight', false);
-				},
-
-				drop: function (e)
-				{
-					var dt = e.dataTransfer;
-					e.stopPropagation();
-					e.preventDefault();
-
-					// Make sure we are dragging a file over
-					if (!dt && !(dt.files || (!$.browser.webkit && dt.types.contains && dt.types.contains('Files'))))
-						return false;
-
-					dragUIOpened = false;
-
-					var files = dt.files;
-					$dropZone.fadeOut('fast', function()
-					{
-						$element.fadeIn(function()
-						{
-							attachFiles(files);
 						});
-					});
-				}
-			};
+					}
+				};
 
-			$.each(documentEvents, function (index, documentEvent)
-			{
+			$.each(documentEvents, function (index, documentEvent) {
 				document.body.addEventListener(index, documentEvent, false);
 			});
 
-			$.each(dropZoneEvents, function (index, dropZoneEvent)
-			{
+			$.each(dropZoneEvents, function (index, dropZoneEvent) {
 				document.getElementById("dropzone" + element.id).addEventListener(index, dropZoneEvent, false);
 			});
 
-			$element.change(function ()
-			{
+			$element.change(function () {
 				attachFiles(this.files);
 			});
 		});
 	};
-}) (jQuery);
+})(jQuery);
