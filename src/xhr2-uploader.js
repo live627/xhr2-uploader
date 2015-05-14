@@ -10,12 +10,12 @@ String.prototype.hashCode = function () {
 
 (function ($) {
 
-	$.fn.uploader = function (o)
+	$.fn.uploader = function (conf)
 	{
-		var o = $.extend({
+		var conf = $.extend({
 			fileDataValidator: function (name, size, type) {},
 			url: 'upload.php'
-		}, o),
+		}, conf),
 
 		attachFiles = function (files)
 		{
@@ -28,11 +28,11 @@ String.prototype.hashCode = function () {
 
 						loadstart: function (e)
 						{
-							o.xhrUploadEvents.loadstart(e, hash);
+							conf.xhrUploadEvents.loadstart(e, hash);
 						},
 						progress: function (e)
 						{
-							o.xhrUploadEvents.progress(e, hash);
+							conf.xhrUploadEvents.progress(e, hash);
 						}
 					},
 
@@ -40,17 +40,17 @@ String.prototype.hashCode = function () {
 
 						success: function (data)
 						{
-							o.ajaxEvents.success(data, hash);
+							conf.ajaxEvents.success(data, hash);
 						},
 						error: function (jqXHR, textStatus, errorThrown)
 						{
-							o.ajaxEvents.error(jqXHR, textStatus, errorThrown, hash);
+							conf.ajaxEvents.error(jqXHR, textStatus, errorThrown, hash);
 						}
 					};
 
-				if (o.fileDataValidator(name, size, type) === true)
+				if (conf.fileDataValidator(name, size, type) === true)
 				{
-					if (o.reader)
+					if (conf.reader)
 					{
 						var reader = new FileReader();
 						reader.onload = function ()
@@ -66,7 +66,7 @@ String.prototype.hashCode = function () {
 
 					$.ajax
 					({
-						url: o.url + ';filename=' + encodeURIComponent(name),
+						url: conf.url + ';filename=' + encodeURIComponent(name),
 						type: 'POST',
 						xhr: function() {  // custom xhr
 							myXhr = $.ajaxSettings.xhr();;
