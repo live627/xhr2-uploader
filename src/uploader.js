@@ -94,7 +94,7 @@
 
 		documentEvents =
 		{
-			dragover: function(e)
+			dragover: function (e)
 			{
 				if ($element.parent().parent().parent().is(':visible'))
 				{
@@ -139,7 +139,7 @@
 		dropZoneEvents =
 		{
 
-			dragover: function(e)
+			dragover: function (e)
 			{
 				e.dataTransfer.dropEffect = 'copy';
 				dragTimer = new Date().getTime();
@@ -147,7 +147,7 @@
 				e.stopPropagation();
 				e.preventDefault();
 			},
-			dragleave: function(e)
+			dragleave: function (e)
 			{
 				$dropZone.toggleClass('highlight', false);
 			},
@@ -175,12 +175,12 @@
 			}
 		};
 
-			$.each(documentEvents, function(index, documentEvent)
+			$.each(documentEvents, function (index, documentEvent)
 			{
 				document.body.addEventListener(index, documentEvent, false);
 			});
 
-			$.each(dropZoneEvents, function(index, dropZoneEvent)
+			$.each(dropZoneEvents, function (index, dropZoneEvent)
 			{
 				document.getElementById("dropzone" + element.id).addEventListener(index, dropZoneEvent, false);
 			});
