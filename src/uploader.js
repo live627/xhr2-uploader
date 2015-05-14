@@ -102,88 +102,88 @@ String.prototype.hashCode = function () {
 			var dragUIOpened = false;
 			var dragTimer = new Date().getTime(),
 
-		documentEvents =
-		{
-			dragover: function (e)
+			documentEvents =
 			{
-				if ($element.parent().parent().parent().is(':visible'))
+				dragover: function (e)
 				{
-					e.dataTransfer.dropEffect = 'none';
+					if ($element.parent().parent().parent().is(':visible'))
+					{
+						e.dataTransfer.dropEffect = 'none';
 
+						e.stopPropagation();
+						e.preventDefault();
+
+						// Expand the additional option if it's collapsed
+						if (!dragUIOpened)
+						{
+							// Show a neat "Drop the file here" notice
+							$element.fadeOut('fast', function()
+							{
+								$dropZone.fadeIn();
+							});
+							dragUIOpened = true;
+						}
+						dragTimer = new Date().getTime();
+					}
+				},
+
+				dragleave: function(e)
+				{
+					if ($element.parent().parent().parent().is(':visible'))
+					{
+						setTimeout(function()
+						{
+							if (new Date().getTime() - dragTimer > 200)
+							{
+								$dropZone.fadeOut('fast', function()
+								{
+									$element.fadeIn();
+								});
+								dragUIOpened = false;
+							}
+						}, 200);
+					}
+				}
+			},
+
+			dropZoneEvents =
+			{
+
+				dragover: function (e)
+				{
+					e.dataTransfer.dropEffect = 'copy';
+					dragTimer = new Date().getTime();
+					$dropZone.toggleClass('highlight', true);
+					e.stopPropagation();
+					e.preventDefault();
+				},
+				dragleave: function (e)
+				{
+					$dropZone.toggleClass('highlight', false);
+				},
+
+				drop: function (e)
+				{
+					var dt = e.dataTransfer;
 					e.stopPropagation();
 					e.preventDefault();
 
-					// Expand the additional option if it's collapsed
-					if (!dragUIOpened)
+					// Make sure we are dragging a file over
+					if (!dt && !(dt.files || (!$.browser.webkit && dt.types.contains && dt.types.contains('Files'))))
+						return false;
+
+					dragUIOpened = false;
+
+					var files = dt.files;
+					$dropZone.fadeOut('fast', function()
 					{
-						// Show a neat "Drop the file here" notice
-						$element.fadeOut('fast', function()
+						$element.fadeIn(function()
 						{
-							$dropZone.fadeIn();
+							attachFiles(files);
 						});
-						dragUIOpened = true;
-					}
-					dragTimer = new Date().getTime();
-				}
-			},
-
-			dragleave: function(e)
-			{
-				if ($element.parent().parent().parent().is(':visible'))
-				{
-					setTimeout(function()
-					{
-						if (new Date().getTime() - dragTimer > 200)
-						{
-							$dropZone.fadeOut('fast', function()
-							{
-								$element.fadeIn();
-							});
-							dragUIOpened = false;
-						}
-					}, 200);
-				}
-			}
-		},
-
-		dropZoneEvents =
-		{
-
-			dragover: function (e)
-			{
-				e.dataTransfer.dropEffect = 'copy';
-				dragTimer = new Date().getTime();
-				$dropZone.toggleClass('highlight', true);
-				e.stopPropagation();
-				e.preventDefault();
-			},
-			dragleave: function (e)
-			{
-				$dropZone.toggleClass('highlight', false);
-			},
-
-			drop: function (e)
-			{
-				var dt = e.dataTransfer;
-				e.stopPropagation();
-				e.preventDefault();
-
-				// Make sure we are dragging a file over
-				if (!dt && !(dt.files || (!$.browser.webkit && dt.types.contains && dt.types.contains('Files'))))
-					return false;
-
-				dragUIOpened = false;
-
-				var files = dt.files;
-				$dropZone.fadeOut('fast', function()
-				{
-					$element.fadeIn(function()
-					{
-						attachFiles(files);
 					});
-				});
-			}
-		};
+				}
+			};
 
 			$.each(documentEvents, function (index, documentEvent)
 			{
