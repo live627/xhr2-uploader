@@ -127,11 +127,11 @@ String.prototype.hashCode = function () {
 					}
 				},
 
-				dragleave: function(e)
+				dragleave: function (e)
 				{
 					if ($element.parent().parent().parent().is(':visible'))
 					{
-						setTimeout(function()
+						setTimeout(function ()
 						{
 							if (new Date().getTime() - dragTimer > 200)
 							{
