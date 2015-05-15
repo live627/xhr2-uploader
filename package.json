@@ -1,0 +1,36 @@
+{
+  "name": "xhr2-uploader",
+  "version": "0.2.0",
+  "description": "xhr2-uploader component",
+  "main": "src/xhr2-uploader.js",
+  "scripts": {
+    "build": "mkdirp build && (uglifyjs --compress booleans  --mangle --reserved $ --source-map build/xhr2-uploader.min.js.map -- src/xhr2-uploader.js > build/xhr2-uploader.min.js & lessc src/xhr2-uploader.less > build/xhr2-uploader.css & cssmin build/xhr2-uploader.css > build/xhr2-uploader.min.css)",
+    "watch": "watch \"npm run build\" src",
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "repository": {
+    "type": "git",
+    "url": "https://live627@github.com/live627/xhr2-uploader.git"
+  },
+  "keywords": [
+    "autosuggest",
+    "xhr2-uploader",
+    "jquery",
+    "jquery-plugin"
+  ],
+  "author": "live627 <live627@gmail.com>",
+  "license": "MIT",
+  "bugs": {
+    "url": "https://github.com/live627/xhr2-uploader/issues"
+  },
+  "homepage": "https://github.com/live627/xhr2-uploader",
+  "devDependencies": {
+    "less": "^2.5.0",
+    "uglify-js": "^2.4.20",
+    "watch": "^0.16.0",
+    "cssmin": "^0.4.3"
+  },
+  "dependencies": {
+    "mkdirp": "^0.5.0"
+  }
+}
