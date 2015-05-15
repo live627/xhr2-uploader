@@ -14,6 +14,10 @@ String.prototype.hashCode = function () {
 			conf = $.extend({
 				url: 'upload.php',
 				maxSize: 10240,
+				locale: {
+					dropZoneTitle: 'Drop files here',
+					dropZoneSubText: 'In order to attach them to this post'
+				},
 				fileDataValidator: function (name, size, type) {
 					if (size > maxSize) {
 						alert(name + ': icon too large. Try to get it to be under ' + (maxSize / 1024) + ' KB.');
