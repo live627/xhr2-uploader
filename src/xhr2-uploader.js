@@ -80,8 +80,9 @@ String.prototype.hashCode = function () {
 								myXhr = $.ajaxSettings.xhr();
 
 								if (myXhr.upload) { // check if upload property exists
-									myXhr.upload.addEventListener("loadstart", conf.xhrUploadEvents.loadstart, false);
-									myXhr.upload.addEventListener('progress', conf.xhrUploadEvents.progress, false); // for handling the progress of the upload
+									$.each(xhrUploadEvents, function (index, xhrUploadEvent) {
+										myXhr.upload.addEventListener(index, xhrUploadEvent, false);
+									});
 								}
 								return myXhr;
 							},
