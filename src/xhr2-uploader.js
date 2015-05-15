@@ -9,35 +9,57 @@ String.prototype.hashCode = function () {
 };
 
 (function ($) {
-
 	$.fn.uploader = function (conf) {
 		var
 			conf = $.extend({
+				url: 'upload.php',
+				maxSize: 10240,
 				fileDataValidator: function (name, size, type) {
+					if (size > maxSize) {
+						alert(name + ': icon too large. Try to get it to be under ' + (maxSize / 1024) + ' KB.');
+						return false;
+					}
+					return true;
 				},
-				url: 'upload.php'
+				ajaxEvents: {
+					error: function (jqXHR, textStatus, errorThrown, hash) {
+						var errData = $.parseJSON(jqXHR.responseText), ret = '';
+						$.each(errData, function (index, value) {
+							ret += '<div class="error">' + value + '</div>';
+						});
+						$('div#icon' + hash).addClass('errorbox').removeClass('information').html(ret);
+					},
+					success: function (data, hash) {
+						$('div#icon' + hash).html(data);
+						$('input[type=file]#icon').remove();
+					}
+				},
+				xhrUploadEvents: {
+					progress: function (e, hash) {
+						if (e.lengthComputable) {
+							var percentComplete = e.loaded / e.total;
+							$('progress#icon' + hash).attr({value: e.loaded, max: e.total});
+						}
+						else {
+							// Unable to compute progress information since the total size is unknown
+						}
+					},
+					loadstart: function (e, hash) {
+						$('#icon_container').children('div:not([id^=dropzone])').remove().end().append('<div id="icon' + hash + '" class="information center"><progress id="icon' + hash + '"/></div>');
+					},
+					abort: function (e, hash) {
+						$('progress').remove();
+					},
+					cancel: function (e, hash) {
+						$('progress').remove();
+					}
+				}
 			}, conf),
 
 			attachFiles = function (files) {
 				$.each(files, function (index, file) {
 					var
-						name = file.name, size = file.size, type = file.type, hash = name.hashCode() + Math.random(),
-						xhrUploadEvents = {
-							loadstart: function (e) {
-								conf.xhrUploadEvents.loadstart(e, hash);
-							},
-							progress: function (e) {
-								conf.xhrUploadEvents.progress(e, hash);
-							}
-						},
-						ajaxEvents = {
-							success: function (data) {
-								conf.ajaxEvents.success(data, hash);
-							},
-							error: function (jqXHR, textStatus, errorThrown) {
-								conf.ajaxEvents.error(jqXHR, textStatus, errorThrown, hash);
-							}
-						};
+						name = file.name, size = file.size, type = file.type, hash = name.hashCode() + Math.random();
 
 					if (conf.fileDataValidator(name, size, type) === true) {
 						if (conf.reader) {
@@ -59,14 +81,14 @@ String.prototype.hashCode = function () {
 								myXhr = $.ajaxSettings.xhr();
 
 								if (myXhr.upload) { // check if upload property exists
-									myXhr.upload.addEventListener("loadstart", xhrUploadEvents.loadstart, false);
-									myXhr.upload.addEventListener('progress', xhrUploadEvents.progress, false); // for handling the progress of the upload
+									myXhr.upload.addEventListener("loadstart", conf.xhrUploadEvents.loadstart, false);
+									myXhr.upload.addEventListener('progress', conf.xhrUploadEvents.progress, false); // for handling the progress of the upload
 								}
 								return myXhr;
 							},
 							// Ajax events
-							success: ajaxEvents.success,
-							error: ajaxEvents.error,
+							success: conf.ajaxEvents.success,
+							error: conf.ajaxEvents.error,
 							// Form data
 							data: formData,
 							// Options to tell JQuery not to process data or worry about content-type
