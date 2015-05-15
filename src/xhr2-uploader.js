@@ -16,11 +16,12 @@ String.prototype.hashCode = function () {
 				maxSize: 10240,
 				locale: {
 					dropZoneTitle: 'Drop files here',
-					dropZoneSubText: 'In order to attach them to this post'
+					dropZoneSubText: 'In order to attach them to this post',
+					tooBig: 'icon too large. Try to get it to be under $d KB.'
 				},
 				fileDataValidator: function (name, size, type) {
 					if (size > maxSize) {
-						alert(name + ': icon too large. Try to get it to be under ' + (maxSize / 1024) + ' KB.');
+						alert(name + ': ' + conf.locale.tooBig.replace('$d', maxSize / 1024));
 						return false;
 					}
 					return true;
