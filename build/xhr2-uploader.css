@@ -1,0 +1,10 @@
+.dropzone {
+  text-align: center;
+  border: 1px solid black;
+  padding: 20px;
+  background-color: #f5f5f5;
+  font-size: 400%;
+}
+.dropzone.highlight {
+  background-color: #b7c7cf;
+}
