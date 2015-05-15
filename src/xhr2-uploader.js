@@ -108,7 +108,7 @@ String.prototype.hashCode = function () {
 		return this.each(function () {
 			var element = this, $element = $(element);
 
-			var $dropZone = $('<div id="dropzone' + $element.attr('id') + '" class="dropzone"><div class=" ">' + dropZoneTitle + '</div><small>' + dropZoneSubText + '</small></div>').hide().prependTo($element.parent());
+			var $dropZone = $('<div id="dropzone' + $element.attr('id') + '" class="dropzone"><div class=" ">' + conf.locale.dropZoneTitle + '</div><small>' + conf.locale.dropZoneSubText + '</small></div>').hide().prependTo($element.parent());
 
 			var dragUIOpened = false;
 			var dragTimer = new Date().getTime(),
