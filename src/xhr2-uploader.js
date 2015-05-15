@@ -20,8 +20,8 @@ String.prototype.hashCode = function () {
 					tooBig: 'icon too large. Try to get it to be under $d KB.'
 				},
 				fileDataValidator: function (name, size, type) {
-					if (size > maxSize) {
-						alert(name + ': ' + conf.locale.tooBig.replace('$d', maxSize / 1024));
+					if (size > conf.maxSize) {
+						alert(name + ': ' + conf.locale.tooBig.replace('$d', conf.maxSize / 1024));
 						return false;
 					}
 					return true;
