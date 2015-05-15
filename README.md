@@ -30,4 +30,7 @@ Here is a reference to all the events that may be called by the XHR upload objec
       // before the request could complete.
     });
     
-The name off the event directly corresponds to methods in `xhrUploadEvents`.
+The name of the event directly corresponds to methods in `xhrUploadEvents`.
+
+## License
+MIT
