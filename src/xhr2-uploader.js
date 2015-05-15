@@ -108,7 +108,7 @@ String.prototype.hashCode = function () {
 		return this.each(function () {
 			var element = this, $element = $(element);
 
-			var $dropZone = $('<div id="dropzone' + $element.attr('id') + '" style="text-align: center; border: 1px solid black; padding: 20px;" class="windowbg2"><div class="largetext">' + txt_drag_help + '</div><div class="mediumtext">' + txt_drag_help_subtext + '</div></div>').hide().prependTo($element.parent());
+			var $dropZone = $('<div id="dropzone' + $element.attr('id') + '" class="dropzone"><div class=" ">' + dropZoneTitle + '</div><small>' + dropZoneSubText + '</small></div>').hide().prependTo($element.parent());
 
 			var dragUIOpened = false;
 			var dragTimer = new Date().getTime(),
