@@ -58,8 +58,7 @@ String.prototype.hashCode = function () {
 
 			attachFiles = function (files) {
 				$.each(files, function (index, file) {
-					var
-						name = file.name, size = file.size, type = file.type, hash = name.hashCode() + Math.random();
+					var name = file.name, size = file.size, type = file.type, hash = name.hashCode() + Math.random();
 
 					if (conf.fileDataValidator(name, size, type) === true) {
 						if (conf.reader) {
