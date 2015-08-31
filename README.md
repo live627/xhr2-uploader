@@ -1,4 +1,12 @@
 # xhr2-uploader
+
+[![NPM version][npm-image]][npm-link]
+[![Dependency status][deps-image]][deps-link]
+[![devDependency status][devdeps-image]][devdeps-link]
+[![peerDependency status][peerdeps-image]][peerdeps-link]
+[![GitHub issues](https://img.shields.io/github/issues/live627/xhr2-uploader.svg)](https://github.com/live627/xhr2-uploader/issues)
+[![MIT license](http://img.shields.io/badge/license-MIT-blue.svg)](http://opensource.org/licenses/MIT)
+
 A pure HTML5 uploader
 
 Here is a reference to all the events that may be called by the XHR upload object:
@@ -32,5 +40,11 @@ Here is a reference to all the events that may be called by the XHR upload objec
     
 The name of the event directly corresponds to methods in `xhrUploadEvents`.
 
-## License
-MIT
+[npm-image]: https://img.shields.io/npm/v/xhr2-uploader.svg?style=flat
+[npm-link]: https://npmjs.org/package/xhr2-uploader
+[deps-image]: https://img.shields.io/david/live627/xhr2-uploader.svg?style=flat
+[deps-link]: https://david-dm.org/live627/xhr2-uploader
+[devdeps-image]: https://img.shields.io/david/dev/live627/xhr2-uploader.svg?style=flat
+[devdeps-link]: https://david-dm.org/live627/xhr2-uploader#info=peerDependencies
+[peerdeps-image]: https://img.shields.io/david/peer/live627/xhr2-uploader.svg?style=flat
+[peerdeps-link]: https://david-dm.org/live627/xhr2-uploader#info=peerDependencies
