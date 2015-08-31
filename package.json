@@ -36,9 +36,7 @@
     "cssmin": "^0.4.3",
     "less": "^2.5.1",
     "uglify-js": "^2.4.24",
-    "watch": "^0.16.0"
-  },
-  "dependencies": {
+    "watch": "^0.16.0",
     "mkdirp": "^0.5.1"
   }
 }
