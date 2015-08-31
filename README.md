@@ -54,8 +54,6 @@ The name of the event directly corresponds to methods in `xhrUploadEvents`.
 - Opera 12+ (Version 12 for MacOS has a buggy API)
 - Safari 6+
 
-For all the other browsers, dropzone provides an oldschool file input fallback.
-
 ## Why another library?
 
 I find that all good libraries which feature what I want are too big asnd hard to read.
