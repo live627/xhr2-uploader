@@ -58,7 +58,7 @@ For all the other browsers, dropzone provides an oldschool file input fallback.
 
 ## Why another library?
 
-I find that all good librraries which feature what I want are too big asnd hard to read.
+I find that all good libraries which feature what I want are too big asnd hard to read.
 
 My goals with this script are:
 - to keep it as lean and readable as possible
