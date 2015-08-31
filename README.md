@@ -40,9 +40,9 @@ Here is a reference to all the events that may be called by the XHR upload objec
 
 The name of the event directly corresponds to methods in `xhrUploadEvents`.
 
-#A# Build
+## Build
 
-`npm install` to grab all the dependenceies
+`npm install` to grab all the dependenceies<br>
 `npm run build` uglify and minify JS, compile LESS into CSS and minify it
 
 
