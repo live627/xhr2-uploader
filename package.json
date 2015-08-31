@@ -13,8 +13,16 @@
     "url": "https://live627@github.com/live627/xhr2-uploader.git"
   },
   "keywords": [
-    "autosuggest",
-    "xhr2-uploader",
+    "xhr",
+    "http",
+    "xmlhttprequest",
+    "xhr2",
+    "html5",
+    "uploader",
+    "upload",
+    "file",
+    "drag",
+    "drop",
     "jquery",
     "jquery-plugin"
   ],
