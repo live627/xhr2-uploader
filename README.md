@@ -40,6 +40,32 @@ Here is a reference to all the events that may be called by the XHR upload objec
     
 The name of the event directly corresponds to methods in `xhrUploadEvents`.
 
+#A# Build
+
+`npm install` to grab all the dependenceies
+`npm run build` uglify and minify JS, compile LESS into CSS and minify it
+
+
+## Browser support
+
+- Chrome 7+
+- Firefox 4+
+- IE 10+
+- Opera 12+ (Version 12 for MacOS has a buggy API)
+- Safari 6+
+
+For all the other browsers, dropzone provides an oldschool file input fallback.
+
+## Why another library?
+
+I find that all good librraries which feature what I want are too big asnd hard to read.
+
+My goals with this script are:
+- to keep it as lean and readable as possible
+- to be as customisable/modular as possible
+- to take full advantage of the latest browser APIs
+- to ditch jQuery as a dependency
+
 [npm-image]: https://img.shields.io/npm/v/xhr2-uploader.svg?style=flat
 [npm-link]: https://npmjs.org/package/xhr2-uploader
 [deps-image]: https://img.shields.io/david/live627/xhr2-uploader.svg?style=flat
